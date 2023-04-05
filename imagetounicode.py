@@ -1,19 +1,59 @@
 #!/usr/bin/python3
 
 import os.path
+import re
 from PIL import Image, ImageDraw, ImageFont
+
+
+def detectImages():
+    images=[]
+    for f in os.listdir("sampleimages/"):
+        if (f.endswith('.jpg') or f.endswith('.jpeg') or f.endswith('.png')):
+            images.append(f)
+    return images
 
 def main():
 
     if not os.path.isfile("unicodescale.txt"):
         print("Could not find scale file.")
         return
+    
+    images=detectImages()
+    print("Located the following images:")
+    for i in range(len(images)):
+        print(f'\t({i+1}) {images[i]}')
+    
+    print(f'\t({len(images)+1}) Custom File Path')
+    print(f'\t({len(images)+2}) Quit')
 
-    valid=False
+    answer=None
     imageFile=None
-    while(not valid):
-        imageFile=input("Enter the name of the image file: ")
-        valid=os.path.isfile(imageFile)
+    while not answer:
+        answer=int(input("Please make a selection: "))
+        if not answer in range(1,len(images)+3):
+            answer=None
+            print(f"Invalid Option")
+            continue
+
+        if answer==len(images)+2:
+            return
+        elif answer==len(images)+1:
+            valid=False
+            while(not valid):
+                imageFile=input("Enter the name of the image file: ")
+                valid=os.path.isfile(imageFile)
+        else:
+            imageFile=images[i-1]
+
+    #TODO are lists not ordered?
+    
+
+    print(f"Using {imageFile}")
+    return
+
+        #answer=1
+
+    
     #imageFile="planet.png"
     #imageFile="eggs.jpeg"
 
